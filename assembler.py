@@ -39,6 +39,27 @@ def sanitize(raw_lines):
     return cleaned_lines
 
 
+def convert_to_machine_code(assembler_code):
+    """
+    Converts assembler code into machine code.
+
+    Args:
+        assembler_code: A list of assembler lines.
+
+    Returns:
+        A list of machine code.
+    """
+    machine_code = []
+
+    for line in assembler_code:
+        if line.startswith('@'):
+            machine_code.append(format(int(line[1:]), '016b'))
+        else:
+            machine_code.append(line)
+
+    return machine_code
+
+
 def main():
     """Main function to run the assembler script."""
     try:
@@ -52,7 +73,8 @@ def main():
         with open(input_filename, 'r') as infile, open(output_filename, 'w') as outfile:
             lines_from_file = infile.readlines()
             sanitized_code = sanitize(lines_from_file)
-            output_text = '\n'.join(sanitized_code) + '\n'
+            machine_code = convert_to_machine_code(sanitized_code)
+            output_text = '\n'.join(machine_code) + '\n'
             outfile.write(output_text)
 
         print(f"Assembly successful! Output written to '{output_filename}'")
