@@ -39,17 +39,6 @@ def sanitize(raw_lines):
     return cleaned_lines
 
 
-def write_output_file(output_lines, output_file):
-    """
-    Write lines from a list to the output file.
-
-    Args:
-        output_lines: A list of lines to write.
-        output_file: A file to write the lines.
-    """
-    for line in output_lines:
-        output_file.write(line + '\n')
-
 def main():
     """Main function to run the assembler script."""
     try:
@@ -63,7 +52,8 @@ def main():
         with open(input_filename, 'r') as infile, open(output_filename, 'w') as outfile:
             lines_from_file = infile.readlines()
             sanitized_code = sanitize(lines_from_file)
-            write_output_file(sanitized_code, outfile) 
+            output_text = '\n'.join(sanitized_code) + '\n'
+            outfile.write(output_text)
 
         print(f"Assembly successful! Output written to '{output_filename}'")
     except IndexError:
